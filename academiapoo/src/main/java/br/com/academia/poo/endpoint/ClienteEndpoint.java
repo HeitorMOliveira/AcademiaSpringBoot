@@ -16,8 +16,6 @@ import br.com.academia.poo.error.ResourceNotFoundException;
 import br.com.academia.poo.model.Cliente;
 import br.com.academia.poo.repository.ClienteRepository;
 
-
-
 @RestController
 @RequestMapping("/clientes")
 public class ClienteEndpoint {
@@ -66,8 +64,8 @@ public class ClienteEndpoint {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	private void verificarClienteExiste(Long id){ 
-		if(!clientes.findById(id).isPresent()) 
-			throw new ResourceNotFoundException("cliente não encontrado pelo ID: " + id); 
+	private void verificarClienteExiste(Long id) {
+		if (!clientes.findById(id).isPresent())
+			throw new ResourceNotFoundException("cliente não encontrado pelo ID: " + id);
 	}
 }
