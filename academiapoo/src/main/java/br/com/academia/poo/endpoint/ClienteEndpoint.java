@@ -14,7 +14,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.academia.poo.error.ResourceNotFoundException;
 import br.com.academia.poo.model.Cliente;
+import br.com.academia.poo.model.Equipamento;
 import br.com.academia.poo.repository.ClienteRepository;
+import io.swagger.annotations.ApiOperation;
+
+
 
 @RestController
 @RequestMapping("/clientes")
@@ -30,12 +34,14 @@ public class ClienteEndpoint {
 
 	// metodo get
 	@GetMapping
+	@ApiOperation(value = "Mostra uma lista de clientes já cadastrados", response = Cliente.class)
 	public ResponseEntity<?> listAllClientes() {
 		return new ResponseEntity<>(clientes.findAll(), HttpStatus.OK);
 	}
 
 	// metodo get
 	@GetMapping(path = "/{id}")
+	@ApiOperation(value = "Mostra um cliente específico", response = Cliente.class)
 	public ResponseEntity<?> getClienteById(@PathVariable("id") Long id) {
 		verificarClienteExiste(id);
 		Cliente cliente = clientes.findById(id).get();
@@ -44,12 +50,14 @@ public class ClienteEndpoint {
 
 	// metodo post
 	@PostMapping
+	@ApiOperation(value = "Cadastra um novo cliente na lista", response = Cliente.class)
 	public ResponseEntity<?> saveCliente(@RequestBody Cliente cliente) {
 		return new ResponseEntity<>(clientes.save(cliente), HttpStatus.OK);
 	}
 
 	// metodo delete
 	@DeleteMapping("/{id}")
+	@ApiOperation(value = "Deleta da lista um cliente cadastrado", response = Cliente.class)
 	public ResponseEntity<?> deleteCliente(@PathVariable Long id) {
 		verificarClienteExiste(id);
 		clientes.deleteById(id);
@@ -57,15 +65,17 @@ public class ClienteEndpoint {
 	}
 
 	// metodo put
-	@PutMapping
+	@PutMapping(value = "/alteraCliente")
+	@ApiOperation(value = "Altera os dados de um cliente já cadastrado", response = Cliente.class)
 	public ResponseEntity<?> updateCliente(@RequestBody Cliente cliente) {
 		verificarClienteExiste(cliente.getId());
+		Cliente c = cliente;
 		clientes.save(cliente);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	private void verificarClienteExiste(Long id) {
-		if (!clientes.findById(id).isPresent())
-			throw new ResourceNotFoundException("cliente não encontrado pelo ID: " + id);
+	private void verificarClienteExiste(Long id){ 
+		if(!clientes.findById(id).isPresent()) 
+			throw new ResourceNotFoundException("cliente não encontrado pelo ID: " + id); 
 	}
 }
