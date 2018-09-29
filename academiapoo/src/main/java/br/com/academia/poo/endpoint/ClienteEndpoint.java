@@ -2,6 +2,7 @@ package br.com.academia.poo.endpoint;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,8 +18,8 @@ import br.com.academia.poo.model.Cliente;
 import br.com.academia.poo.model.Equipamento;
 import br.com.academia.poo.repository.ClienteRepository;
 import io.swagger.annotations.ApiOperation;
-
-
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ApiResponse;
 
 @RestController
 @RequestMapping("/clientes")
@@ -49,8 +50,15 @@ public class ClienteEndpoint {
 	}
 
 	// metodo post
-	@PostMapping
-	@ApiOperation(value = "Cadastra um novo cliente na lista", response = Cliente.class)
+
+	@PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiOperation(value = "Cadastra um novo cliente na lista", response = Cliente.class, notes = "Essa operação salva um novo registro com as informações de cliente.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna um cliente com uma mensagem de sucesso", response = Cliente.class),
+			@ApiResponse(code = 500, message = "Caso tenhamos algum erro vamos retornar um cliente", response = Cliente.class)
+
+	})
+
 	public ResponseEntity<?> saveCliente(@RequestBody Cliente cliente) {
 		return new ResponseEntity<>(clientes.save(cliente), HttpStatus.OK);
 	}
@@ -74,8 +82,8 @@ public class ClienteEndpoint {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	private void verificarClienteExiste(Long id){ 
-		if(!clientes.findById(id).isPresent()) 
-			throw new ResourceNotFoundException("cliente não encontrado pelo ID: " + id); 
+	private void verificarClienteExiste(Long id) {
+		if (!clientes.findById(id).isPresent())
+			throw new ResourceNotFoundException("cliente não encontrado pelo ID: " + id);
 	}
 }
