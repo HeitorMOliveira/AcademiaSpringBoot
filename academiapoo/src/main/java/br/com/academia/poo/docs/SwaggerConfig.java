@@ -47,8 +47,8 @@ public class SwaggerConfig {
 	private Contact contato() {
  
 		return new Contact(
-				"Heitor Moreira",
+				"Heitor Moreira, Douglas Emiliano, Hugo Martins, Alisson Victor, Willams Pinto",
 				"http://www.academiapoo.com.br", 
-				"heitor.moreira@dce.ufpb.br");
+				"academia@poo.com.br");
 	}
 }

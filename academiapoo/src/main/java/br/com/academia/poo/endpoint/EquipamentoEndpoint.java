@@ -13,22 +13,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.academia.poo.error.ResourceNotFoundException;
-import br.com.academia.poo.model.Cliente;
 import br.com.academia.poo.model.Equipamento;
 import br.com.academia.poo.repository.EquipamentoRepository;
 import io.swagger.annotations.ApiOperation;
 
-
-
 @RestController
 @RequestMapping("/equipamentos")
 public class EquipamentoEndpoint {
-
-	private final EquipamentoRepository equipamentos;
-
+	
+	private static EquipamentoRepository equipamentos;
+	
 	@Autowired
 	public EquipamentoEndpoint(EquipamentoRepository equipamentos) {
-		super();
 		this.equipamentos = equipamentos;
 	}
 
@@ -43,39 +39,39 @@ public class EquipamentoEndpoint {
 	@GetMapping(path = "/{id}")
 	@ApiOperation(value = "Mostra em equipamento específico", response = Equipamento.class)
 	public ResponseEntity<?> getEquipamentoById(@PathVariable("id") Long id) {
-		verificarEquipamentoExiste(id);
+		verificarEquipamentosExiste(id);
 		Equipamento equipamento = equipamentos.findById(id).get();
 		return new ResponseEntity<>(equipamento, HttpStatus.OK);
 	}
 
 	// metodo post
-	@PostMapping
+	@PostMapping(path = "/cadastrarEquipamento")
 	@ApiOperation(value = "Cadastra um novo equipamento na lista", response = Equipamento.class)
 	public ResponseEntity<?> saveEquipamento(@RequestBody Equipamento equipamento) {
 		return new ResponseEntity<>(equipamentos.save(equipamento), HttpStatus.OK);
 	}
 
 	// metodo delete
-	@DeleteMapping("/{id}")
+	@DeleteMapping(path = "/{id}")
 	@ApiOperation(value = "Deleta da lista um equipamento cadastrado", response = Equipamento.class)
 	public ResponseEntity<?> deleteEquipamento(@PathVariable Long id) {
-		verificarEquipamentoExiste(id);
+		verificarEquipamentosExiste(id);
 		equipamentos.deleteById(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	// metodo put
-	@PutMapping(value = "/alteraEquipamento")
+	@PutMapping(path = "/alteraEquipamento")
 	@ApiOperation(value = "Altera os dados cadastrados de um equipamento", response = Equipamento.class)
 	public ResponseEntity<?> updateEquipamento(@RequestBody Equipamento equipamento) {
-		verificarEquipamentoExiste(equipamento.getId());
+		verificarEquipamentosExiste(equipamento.getId());
 		Equipamento e = equipamento;
-		equipamentos.save(equipamento);
-		return new ResponseEntity<>(HttpStatus.OK);
+		equipamentos.save(e);
+		return new ResponseEntity<>(e, HttpStatus.OK);
 	}
 
-	private void verificarEquipamentoExiste(Long id){ 
-		if(!equipamentos.findById(id).isPresent()) 
-			throw new ResourceNotFoundException("equipamento não encontrado pelo ID: " + id); 
+	private void verificarEquipamentosExiste(Long id) {
+		if (!equipamentos.findById(id).isPresent())
+			throw new ResourceNotFoundException("Equipamento não encontrado pelo ID: " + id);
 	}
 }

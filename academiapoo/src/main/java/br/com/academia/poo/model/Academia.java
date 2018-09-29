@@ -6,16 +6,14 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Equipamento {
+public class Academia {
 
-	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	private String name;
-	private int peso;
-	private String tipo;
-	private String descricao;
+	private String nome;
+	private String endereco;
+	private String contato;
 
 	@Override
 	public int hashCode() {
@@ -33,7 +31,7 @@ public class Equipamento {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Equipamento other = (Equipamento) obj;
+		Academia other = (Academia) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -50,40 +48,28 @@ public class Equipamento {
 		this.id = id;
 	}
 
-	public String getName() {
-		return name;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public String getEndereco() {
+		return endereco;
 	}
 
-	public int getPeso() {
-		return peso;
+	public void setEndereco(String endereco) {
+		this.endereco = endereco;
 	}
 
-	public void setPeso(int peso) {
-		this.peso = peso;
+	public String getContato() {
+		return contato;
 	}
 
-	public String getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
-
-	public String getDescricao() {
-		return descricao;
-	}
-
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setContato(String contato) {
+		this.contato = contato;
 	}
 
 }
