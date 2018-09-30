@@ -1,6 +1,7 @@
 package br.com.academia.poo.endpoint;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,8 @@ import br.com.academia.poo.error.ResourceNotFoundException;
 import br.com.academia.poo.model.Funcionario;
 import br.com.academia.poo.repository.FuncionarioRepository;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ApiResponse;
 
 @RestController
 @RequestMapping("/funcionaios")
@@ -22,30 +25,57 @@ public class FuncionarioEndpoint {
 	
 	private static FuncionarioRepository funcionarios;
 	
+/////Metodo Get
+	
 	@GetMapping
-	@ApiOperation(value = "Mostra uma lista de funcionários já cadastrados", response = Funcionario.class)
+	@ApiOperation(value = "Mostra uma lista de funcionários já cadastrados", response = Funcionario.class, notes = "Essa operação mostra um registro dos funcionários cadastrados.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna uma lista de funcionarios com uma mensagem de sucesso", response = Funcionario.class),
+			@ApiResponse(code = 500, message = "Caso tenhamos algum erro, não retornamos nada", response = Funcionario.class)
+
+	})
 	public ResponseEntity<?> listarAllFuncionarios() {
 		return new ResponseEntity<>(funcionarios.findAll(), HttpStatus.OK);
 	}
 
+//////GetById	
 	@GetMapping(value = "/{id}")
-	@ApiOperation(value = "Mostra um funcionário específico já cadastrado", response = Funcionario.class)
+	@ApiOperation(value = "Mostra um funcionário específico já cadastrado", response = Funcionario.class, notes = "Essa operação mostra um registro de um funcionário específico.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna uma funcionario específico com uma mensagem de sucesso", response = Funcionario.class),
+			@ApiResponse(code = 500, message = "Caso tenhamos algum não retornamos nada", response = Funcionario.class)
+
+	})
 	public ResponseEntity<?> listarFuncionario(@PathVariable("id") Long id) {
 		verificarFuncionarioExiste(id);
 		Funcionario funcionario = funcionarios.findById(id).get();
 		return new ResponseEntity<>(funcionario, HttpStatus.OK);
 	}
 
-	@PostMapping(path = "/cadastrarFuncionario")
-	@ApiOperation(value = "Cadastra um funcionário na lista", response = Funcionario.class)
+	////Metodo Post
+	
+	@PostMapping(path = "/cadastrarFuncionario", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ApiOperation(value = "Cadastra um funcionário na lista", response = Funcionario.class, notes = "Essa operação salva um novo registro com as informações de funcionário")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna um funcionário com uma mensagem de sucesso", response = Funcionario.class),
+			@ApiResponse(code = 500, message = "Caso tenhamos algum erro, não retornamos nada", response = Funcionario.class)
+
+	})
 	public ResponseEntity<?> cadastrarFuncionario(@RequestBody Funcionario funcionario) {
 		Funcionario funcionarioSalvo = funcionario;
 
 		return new ResponseEntity<>(funcionarios.save(funcionarioSalvo), HttpStatus.CREATED);
 	}
 
+	////Metodo Put
+	
 	@PutMapping(path = "/alteraFuncionario")
-	@ApiOperation(value = "Altera os dados  cadastrados de um funcionário", response = Funcionario.class)
+	@ApiOperation(value = "Altera os dados  cadastrados de um funcionário", response = Funcionario.class, notes = "Esta operação altera os dados de um funcionário")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna um funcionário com uma mensagem de sucesso", response = Funcionario.class),
+			@ApiResponse(code = 500, message = "Caso tenhamos algum erro, retornaremos o mesmo", response = Funcionario.class)
+			
+	})
 	public ResponseEntity<?> atualizarFuncionario(@RequestBody Funcionario funcionario) {
 		verificarFuncionarioExiste(funcionario.getId());
 		Funcionario f = funcionario;
@@ -53,8 +83,14 @@ public class FuncionarioEndpoint {
 		return new ResponseEntity<>(f, HttpStatus.OK);
 	}
 
+	///Metodo Delete
 	@DeleteMapping(path = "/{id}")
-	@ApiOperation(value = "Deleta da lista um funcionário cadastrado", response = Funcionario.class)
+	@ApiOperation(value = "Deleta da lista um funcionário cadastrado", response = Funcionario.class, notes = "Esta operação deleta um funcionário da lista")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna um funcionário com uma mensagem de sucesso", response = Funcionario.class),
+			@ApiResponse(code = 500, message = "Caso tenhamos algum erro, retornaremos o mesmo", response = Funcionario.class)
+			
+	})
 	public ResponseEntity<?> deletarFuncionario(@PathVariable Long id) {
 		verificarFuncionarioExiste(id);
 		funcionarios.deleteById(id);
