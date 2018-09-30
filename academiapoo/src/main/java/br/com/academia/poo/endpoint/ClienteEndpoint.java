@@ -35,14 +35,25 @@ public class ClienteEndpoint {
 
 	// metodo get
 	@GetMapping
-	@ApiOperation(value = "Mostra uma lista de clientes já cadastrados", response = Cliente.class)
+	@ApiOperation(value = "Mostra uma lista de clientes já cadastrados", response = Cliente.class, notes = "Essa operação mostra um registro dos clientes cadastrados.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna uma lista de clientes com uma mensagem de sucesso", response = Cliente.class),
+			@ApiResponse(code = 500, message = "Caso tenhamos algum não retornamos nada", response = Cliente.class)
+
+	})
 	public ResponseEntity<?> listAllClientes() {
 		return new ResponseEntity<>(clientes.findAll(), HttpStatus.OK);
 	}
 
+	
 	// metodo get
 	@GetMapping(path = "/{id}")
-	@ApiOperation(value = "Mostra um cliente específico", response = Cliente.class)
+	@ApiOperation(value = "Mostra um cliente específico", response = Cliente.class, notes = "Essa operação mostra um registro de um cliente específico.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna um cliente com uma mensagem de sucesso", response = Cliente.class),
+			@ApiResponse(code = 500, message = "Caso tenhamos algum erro não retornamos nada", response = Cliente.class)
+
+	})
 	public ResponseEntity<?> getClienteById(@PathVariable("id") Long id) {
 		verificarClienteExiste(id);
 		Cliente cliente = clientes.findById(id).get();
@@ -63,18 +74,30 @@ public class ClienteEndpoint {
 		return new ResponseEntity<>(clientes.save(cliente), HttpStatus.OK);
 	}
 
+	
 	// metodo delete
 	@DeleteMapping("/{id}")
-	@ApiOperation(value = "Deleta da lista um cliente cadastrado", response = Cliente.class)
+	@ApiOperation(value = "Deleta da lista um cliente cadastrado", response = Cliente.class, notes = "Essa operação deleta um cliente da lista.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna um cliente com uma mensagem de sucesso", response = Cliente.class),
+			@ApiResponse(code = 500, message = "Caso tenhamos algum erro vamos retornar um cliente", response = Cliente.class)
+
+	})
 	public ResponseEntity<?> deleteCliente(@PathVariable Long id) {
 		verificarClienteExiste(id);
 		clientes.deleteById(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
+	
 	// metodo put
 	@PutMapping(value = "/alteraCliente")
-	@ApiOperation(value = "Altera os dados de um cliente já cadastrado", response = Cliente.class)
+	@ApiOperation(value = "Altera os dados de um cliente já cadastrado", response = Cliente.class, notes = "Essa operação altera os dados de um cliente específico da lista.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna um cliente com uma mensagem de sucesso", response = Cliente.class),
+			@ApiResponse(code = 500, message = "Caso tenhamos algum erro vamos retornar um cliente", response = Cliente.class)
+
+	})
 	public ResponseEntity<?> updateCliente(@RequestBody Cliente cliente) {
 		verificarClienteExiste(cliente.getId());
 		Cliente c = cliente;
