@@ -35,7 +35,7 @@ public class AcademiaEndpoint {
 
 	// metodo get
 	@GetMapping
-	@ApiOperation(value = "Mostra uma lista de academiass já cadastradas", response = Equipamento.class)
+	@ApiOperation(value = "Mostra uma lista de academiass já cadastradas", response = Academia.class)
 	public ResponseEntity<?> listAllAcademias() {
 		return new ResponseEntity<>(academias.findAll(), HttpStatus.OK);
 	}
@@ -51,7 +51,7 @@ public class AcademiaEndpoint {
 
 	// metodo post
 	@PostMapping
-	@ApiOperation(value = "Cadastra uma nova academia na lista", response = Equipamento.class)
+	@ApiOperation(value = "Cadastra uma nova academia na lista", response = Academia.class)
 	public ResponseEntity<?> saveAcademia(@RequestBody Academia academia) {
 		return new ResponseEntity<>(academias.save(academia), HttpStatus.OK);
 	}
