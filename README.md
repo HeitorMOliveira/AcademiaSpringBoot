@@ -1,2 +1,2 @@
-# AcademiaSpring
-Projeto academia SpringBoot
+# AcademiaSpringBoot
+Projeto academia SpringBoot para poo
