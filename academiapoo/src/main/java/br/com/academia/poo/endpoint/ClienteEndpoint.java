@@ -38,7 +38,7 @@ public class ClienteEndpoint {
 	@ApiOperation(value = "Mostra uma lista de clientes já cadastrados", response = Cliente.class, notes = "Essa operação mostra um registro dos clientes cadastrados.")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Retorna uma lista de clientes com uma mensagem de sucesso", response = Cliente.class),
-			@ApiResponse(code = 500, message = "Caso tenhamos algum não retornamos nada", response = Cliente.class)
+			@ApiResponse(code = 500, message = "Caso tenhamos algum erro, não retornamos nada", response = Cliente.class)
 
 	})
 	public ResponseEntity<?> listAllClientes() {
