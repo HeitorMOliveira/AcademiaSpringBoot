@@ -6,7 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 
 import br.com.academia.poo.model.Funcionario;
 
-public interface FuncionarioRepository extends CrudRepository<Funcionario, Long> {
+public interface FuncionarioRepository extends CrudRepository<Funcionario, Integer> {
 	List<Funcionario> findByName(String name); 
 	
 

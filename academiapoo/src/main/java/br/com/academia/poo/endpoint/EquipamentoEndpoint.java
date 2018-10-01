@@ -52,7 +52,7 @@ public class EquipamentoEndpoint {
 			@ApiResponse(code = 500, message = "Caso tenhamos algum erro, não retornamos nada", response = Equipamento.class)
 
 	})
-	public ResponseEntity<?> getEquipamentoById(@PathVariable("id") Long id) {
+	public ResponseEntity<?> getEquipamentoById(@PathVariable("id") int id) {
 		verificarEquipamentosExiste(id);
 		Equipamento equipamento = equipamentos.findById(id).get();
 		return new ResponseEntity<>(equipamento, HttpStatus.OK);
@@ -73,7 +73,7 @@ public class EquipamentoEndpoint {
 			@ApiResponse(code = 500, message = "Caso tenhamos algum erro, não retornamos nada", response = Equipamento.class)
 
 	})
-	public ResponseEntity<?> deleteEquipamento(@PathVariable Long id) {
+	public ResponseEntity<?> deleteEquipamento(@PathVariable int id) {
 		verificarEquipamentosExiste(id);
 		equipamentos.deleteById(id);
 		return new ResponseEntity<>(HttpStatus.OK);
@@ -94,7 +94,7 @@ public class EquipamentoEndpoint {
 		return new ResponseEntity<>(e, HttpStatus.OK);
 	}
 
-	private void verificarEquipamentosExiste(Long id) {
+	private void verificarEquipamentosExiste(int id) {
 		if (!equipamentos.findById(id).isPresent())
 			throw new ResourceNotFoundException("Equipamento não encontrado pelo ID: " + id);
 	}

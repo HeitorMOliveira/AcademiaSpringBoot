@@ -15,7 +15,7 @@ public class AbstractEntity implements Serializable{
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	private int id;
 	private String name;
 	private int telefone;
 	private String email;
@@ -64,11 +64,11 @@ public class AbstractEntity implements Serializable{
 		this.cpf = cpf;
 	}
 
-	public Long getId() {
+	public int getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -80,12 +80,12 @@ public class AbstractEntity implements Serializable{
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + id;
 		return result;
 	}
 
@@ -98,13 +98,9 @@ public class AbstractEntity implements Serializable{
 		if (getClass() != obj.getClass())
 			return false;
 		AbstractEntity other = (AbstractEntity) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
+		if (id != other.id)
 			return false;
 		return true;
 	}
-	
 	
 }

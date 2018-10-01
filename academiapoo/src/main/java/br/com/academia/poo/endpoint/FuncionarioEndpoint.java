@@ -1,5 +1,6 @@
 package br.com.academia.poo.endpoint;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.academia.poo.error.ResourceNotFoundException;
 import br.com.academia.poo.model.Funcionario;
+import br.com.academia.poo.repository.ClienteRepository;
 import br.com.academia.poo.repository.FuncionarioRepository;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponses;
@@ -25,6 +27,12 @@ public class FuncionarioEndpoint {
 	
 	private static FuncionarioRepository funcionarios;
 	
+	
+	@Autowired
+	public FuncionarioEndpoint(FuncionarioRepository funcionarios) {
+		super();
+		this.funcionarios = funcionarios;
+	}
 /////Metodo Get
 	
 	@GetMapping
@@ -46,7 +54,7 @@ public class FuncionarioEndpoint {
 			@ApiResponse(code = 500, message = "Caso tenhamos algum não retornamos nada", response = Funcionario.class)
 
 	})
-	public ResponseEntity<?> listarFuncionario(@PathVariable("id") Long id) {
+	public ResponseEntity<?> listarFuncionario(@PathVariable("id") int id) {
 		verificarFuncionarioExiste(id);
 		Funcionario funcionario = funcionarios.findById(id).get();
 		return new ResponseEntity<>(funcionario, HttpStatus.OK);
@@ -54,7 +62,7 @@ public class FuncionarioEndpoint {
 
 	////Metodo Post
 	
-	@PostMapping(path = "/cadastrarFuncionario", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@PostMapping( consumes = MediaType.APPLICATION_JSON_UTF8_VALUE, produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ApiOperation(value = "Cadastra um funcionário na lista", response = Funcionario.class, notes = "Essa operação salva um novo registro com as informações de funcionário")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Retorna um funcionário com uma mensagem de sucesso", response = Funcionario.class),
@@ -63,8 +71,7 @@ public class FuncionarioEndpoint {
 	})
 	public ResponseEntity<?> cadastrarFuncionario(@RequestBody Funcionario funcionario) {
 		Funcionario funcionarioSalvo = funcionario;
-
-		return new ResponseEntity<>(funcionarios.save(funcionarioSalvo), HttpStatus.CREATED);
+		return new ResponseEntity<>(funcionarios.save(funcionario), HttpStatus.CREATED);
 	}
 
 	////Metodo Put
@@ -91,13 +98,13 @@ public class FuncionarioEndpoint {
 			@ApiResponse(code = 500, message = "Caso tenhamos algum erro, retornaremos o mesmo", response = Funcionario.class)
 			
 	})
-	public ResponseEntity<?> deletarFuncionario(@PathVariable Long id) {
+	public ResponseEntity<?> deletarFuncionario(@PathVariable int id) {
 		verificarFuncionarioExiste(id);
 		funcionarios.deleteById(id);
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	private void verificarFuncionarioExiste(Long id) {
+	private void verificarFuncionarioExiste(int id) {
 		if (!funcionarios.findById(id).isPresent())
 			throw new ResourceNotFoundException("Funcionario não encontrado pelo ID: " + id);
 	}

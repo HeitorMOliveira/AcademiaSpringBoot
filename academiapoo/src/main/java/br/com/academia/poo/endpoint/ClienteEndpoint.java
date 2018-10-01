@@ -54,7 +54,7 @@ public class ClienteEndpoint {
 			@ApiResponse(code = 500, message = "Caso tenhamos algum erro não retornamos nada", response = Cliente.class)
 
 	})
-	public ResponseEntity<?> getClienteById(@PathVariable("id") Long id) {
+	public ResponseEntity<?> getClienteById(@PathVariable("id") int id) {
 		verificarClienteExiste(id);
 		Cliente cliente = clientes.findById(id).get();
 		return new ResponseEntity<>(cliente, HttpStatus.OK);
@@ -83,7 +83,7 @@ public class ClienteEndpoint {
 			@ApiResponse(code = 500, message = "Caso tenhamos algum erro vamos retornar um cliente", response = Cliente.class)
 
 	})
-	public ResponseEntity<?> deleteCliente(@PathVariable Long id) {
+	public ResponseEntity<?> deleteCliente(@PathVariable int id) {
 		verificarClienteExiste(id);
 		clientes.deleteById(id);
 		return new ResponseEntity<>(HttpStatus.OK);
@@ -105,7 +105,7 @@ public class ClienteEndpoint {
 		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
-	private void verificarClienteExiste(Long id) {
+	private void verificarClienteExiste(int id) {
 		if (!clientes.findById(id).isPresent())
 			throw new ResourceNotFoundException("cliente não encontrado pelo ID: " + id);
 	}
