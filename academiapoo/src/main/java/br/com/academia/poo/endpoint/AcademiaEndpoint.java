@@ -14,12 +14,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import br.com.academia.poo.error.ResourceNotFoundException;
 import br.com.academia.poo.model.Academia;
+import br.com.academia.poo.model.Cliente;
 import br.com.academia.poo.model.Equipamento;
 import br.com.academia.poo.model.Funcionario;
 import br.com.academia.poo.repository.AcademiaRepository;
 import br.com.academia.poo.repository.EquipamentoRepository;
 import br.com.academia.poo.repository.FuncionarioRepository;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 
 @RestController
 @RequestMapping("/academia")
@@ -35,14 +38,22 @@ public class AcademiaEndpoint {
 
 	// metodo get
 	@GetMapping
-	@ApiOperation(value = "Mostra uma lista de academiass já cadastradas", response = Academia.class)
+	@ApiOperation(value = "Mostra uma lista de academias já cadastradas", response = Academia.class, notes = "Essa operação mostra um registro da academias cadastradas.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna uma lista de academias com uma mensagem de sucesso", response = Academia.class),
+			@ApiResponse(code = 500, message = "Caso tenhamos algum erro, não retornamos nada", response = Academia.class)
+	})
 	public ResponseEntity<?> listAllAcademias() {
 		return new ResponseEntity<>(academias.findAll(), HttpStatus.OK);
 	}
 
 	// metodo get
 	@GetMapping(path = "/{id}")
-	@ApiOperation(value = "Mostra uma academia específica", response = Academia.class)
+	@ApiOperation(value = "Mostra uma academia específica", response = Academia.class, notes = "Essa operação mostra os registros de uma academia específica.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna uma academia com uma mensagem de sucesso", response = Academia.class),
+			@ApiResponse(code = 500, message = "Caso tenhamos algum erro, não retornamos nada", response = Academia.class)
+	})
 	public ResponseEntity<?> getAcademiaById(@PathVariable("id") Long id) {
 		verificarAcademiaExiste(id);
 		Academia academia = academias.findById(id).get();
@@ -51,14 +62,22 @@ public class AcademiaEndpoint {
 
 	// metodo post
 	@PostMapping
-	@ApiOperation(value = "Cadastra uma nova academia na lista", response = Academia.class)
+	@ApiOperation(value = "Cadastra uma nova academia na lista", response = Academia.class, notes = "Essa operação cadastra os registros de uma academia específica.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna uma academia com uma mensagem de sucesso", response = Academia.class),
+			@ApiResponse(code = 500, message = "Caso tenhamos algum erro, não retornamos nada", response = Academia.class)
+	})
 	public ResponseEntity<?> saveAcademia(@RequestBody Academia academia) {
 		return new ResponseEntity<>(academias.save(academia), HttpStatus.OK);
 	}
 
 	// metodo delete
 	@DeleteMapping(path = "{id}")
-	@ApiOperation(value = "Deleta da lista uma academia cadastrada", response = Academia.class)
+	@ApiOperation(value = "Deleta da lista uma academia cadastrada", response = Academia.class, notes = "Essa operação deleta os registros de uma academia específica da lista.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna uma academia com uma mensagem de sucesso", response = Academia.class),
+			@ApiResponse(code = 500, message = "Caso tenhamos algum erro, não retornamos nada", response = Academia.class)
+	})
 	public ResponseEntity<?> deleteAcademia(@PathVariable Long id) {
 		verificarAcademiaExiste(id);
 		academias.deleteById(id);
@@ -67,7 +86,11 @@ public class AcademiaEndpoint {
 
 	// metodo put
 	@PutMapping(path = "/alterarAcademia")
-	@ApiOperation(value = "Altera os dados cadastrados de uma academia", response = Academia.class)
+	@ApiOperation(value = "Altera os dados cadastrados de uma academia", response = Academia.class, notes = "Essa operação altera os registros de uma academia específica.")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Retorna uma academia com uma mensagem de sucesso", response = Academia.class),
+			@ApiResponse(code = 500, message = "Caso tenhamos algum erro, não retornamos nada", response = Academia.class)
+	})
 	public ResponseEntity<?> updateEquipamento(@RequestBody Academia academia) {
 		verificarAcademiaExiste(academia.getId());
 		Academia e = academia;
