@@ -22,7 +22,7 @@ import io.swagger.annotations.ApiResponses;
 import io.swagger.annotations.ApiResponse;
 
 @RestController
-@RequestMapping("/funcionaios")
+@RequestMapping("/funcionarios")
 public class FuncionarioEndpoint {
 	
 	private static FuncionarioRepository funcionarios;
@@ -71,7 +71,7 @@ public class FuncionarioEndpoint {
 	})
 	public ResponseEntity<?> cadastrarFuncionario(@RequestBody Funcionario funcionario) {
 		Funcionario funcionarioSalvo = funcionario;
-		return new ResponseEntity<>(funcionarios.save(funcionario), HttpStatus.CREATED);
+		return new ResponseEntity<>(funcionarios.save(funcionario), HttpStatus.OK);
 	}
 
 	////Metodo Put
